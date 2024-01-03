@@ -10,7 +10,7 @@ const Item = () =>{
   useEffect(()=>{
     const fetchAllItem = async ()=>{
       try{
-        const res = await axios.get("http://localhost:8800/item")
+        const res = await axios.get("http://localhost:8800/itemHome")
         setItem(res.data);
       }catch(err){
         console.log(err);
