@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 
-const Item = () =>{
+const ItemListHome = () =>{
   const [item,setItem] = useState([])
 
   useEffect(()=>{
@@ -47,4 +47,4 @@ const Item = () =>{
   )
 }
 
-export default Item;
+export default ItemListHome;
