@@ -5,19 +5,19 @@ import { Link } from 'react-router-dom';
 
 
 const ItemListHome = () =>{
-  const [item,setItem] = useState([])
+  const [item,setItems] = useState([])
 
-  useEffect(()=>{
-    const fetchAllItem = async ()=>{
-      try{
-        const res = await axios.get("http://localhost:8800/itemHome")
-        setItem(res.data);
-      }catch(err){
+  useEffect(() => {
+    const fetchAllItem = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/itemHome");
+        setItems(res.data);
+      } catch (err) {
         console.log(err);
       }
-    }
-    fetchAllItem()
-  },[])
+    };
+    fetchAllItem();
+  }, []);
 
   return (
     <div>
@@ -31,7 +31,7 @@ const ItemListHome = () =>{
               <Link key={item.Item_id} to={`/item/${item.Item_id}`} className="group">
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                   <img
-                    src={item.Item_Image}
+                    src={`data:image/jpeg;base64,${item.Item_Image}`}
                     alt={item.Item_Name}
                     className="h-full w-full object-cover object-center group-hover:opacity-75"
                   />
