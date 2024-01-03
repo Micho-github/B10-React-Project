@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 
 const Item = () =>{
   const [item,setItem] = useState([])
@@ -8,7 +10,7 @@ const Item = () =>{
   useEffect(()=>{
     const fetchAllItem = async ()=>{
       try{
-        const res = await axios.get("http://localhost:8000/item")
+        const res = await axios.get("http://localhost:8800/item")
         setItem(res.data);
       }catch(err){
         console.log(err);
@@ -26,7 +28,7 @@ const Item = () =>{
   
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {item.map(item=>(
-              <a key={item.Item_id} href={item.href} className="group">
+              <Link key={item.Item_id} to={`/item/${item.Item_id}`} className="group">
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                   <img
                     src={item.Item_Image}
@@ -36,7 +38,7 @@ const Item = () =>{
                 </div>
                 <h3 className="mt-4 text-sm text-gray-700">{item.Item_Name}</h3>
                 <p className="mt-1 text-lg font-medium text-blue-600">${item.Price}</p>
-                </a>
+                </Link>
                 ))}
             </div>
             </div>
