@@ -1,5 +1,6 @@
 import Navbar from "../components/navbar";
 import Myitemcard from "../components/MyItemscard";
+import Footer from "../components/footer";
 import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
@@ -46,6 +47,7 @@ const MyItemsPage = () => {
                     />
                 ))}
             </div>
+            <Footer/>
         </div>
     );
 }

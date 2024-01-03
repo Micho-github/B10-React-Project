@@ -1,16 +1,15 @@
 import Navbar from "../components/navbar";
-import ItemCard from "../components/itemCard";
+import ItemInfoCard from "../components/itemInfoCard";
+import Footer from "../components/footer";
 
 
 function ItemPage(){
     return( 
         <div>
             <Navbar/>
-            <ItemCard/>
-        
-
-
-        </div>
+            <ItemInfoCard/>
+            <Footer/>
+            </div>
     );
 }
 export default ItemPage;

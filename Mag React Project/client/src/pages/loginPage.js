@@ -1,4 +1,5 @@
 import Navbar from "../components/navbar";
+import Footer from "../components/footer";
 function LoginPage(){
     return(
         <div>
@@ -13,6 +14,7 @@ function LoginPage(){
             <div className="text-center mt-16 text-lg text-red-400 hover:text-red-600"><a href="./">Forgot your password?</a></div>
             <button className=" flex mx-auto mt-16 mb-5 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Create New Account</button>
             </div>
+            <Footer/>
         </div>
     );
 }
