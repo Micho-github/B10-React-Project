@@ -7,6 +7,7 @@ const SearchBar = () => {
     const [search_input, setSearch_Input] = useState('');
     const [itemSearch, setItemSearch] = useState([]);
     const [searchMessage, setSearchMessage] = useState('');
+    const [showResults, setShowResults] = useState(false);
 
     const handleChangeSearch = (e) => {
         setSearch_Input(e.target.value);
@@ -17,6 +18,7 @@ const SearchBar = () => {
             if (!search_input.trim()) {
                 setSearchMessage('Please enter a search term.');
                 setItemSearch([]);
+                setShowResults(true);
                 return;
             }
 
@@ -28,6 +30,8 @@ const SearchBar = () => {
             } else {
                 setSearchMessage('');
             }
+
+            setShowResults(true);
         } catch (err) {
             console.error(err);
         }
@@ -42,7 +46,6 @@ const SearchBar = () => {
         <div>
             <div className="form" class="flex items-center justify-center">
                 <label for="default-search" class="mb-2 text-sm font-medium text-white sr-only dark:text-white">Search</label>
-                
                 <div class="relative w-2/3">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                         <svg class="w-4 h-4 text-blue-600 dark:text-blue-600" aria-hidden="true" fill="none" viewBox="0 0 20 20">
@@ -52,14 +55,16 @@ const SearchBar = () => {
                     <input onChange={handleChangeSearch} type="text" value={search_input} id="search_input" class="block w-full p-4 ps-10 text-sm text-white border border-white rounded-lg bg-white focus:ring-white focus:border-blue-600 dark:bg-white dark:border-blue-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Item Names..." required />
                     <button type="button" onClick={handleSearchButtonClick} class="text-white absolute end-2.5 bottom-2.5 bg-blue-300 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-indigo-600 dark:focus:ring-blue-800">Search</button>
                 </div>
-                
             </div>
             <FilterButton/>
-            <div className="mt-12">
-                <h1 id="itemTitle" className="text-blue-500">
-                    Searched Items For: {search_input}
-                </h1>
-                {searchMessage && <p className="text-red-500 text-center">{searchMessage}</p>}
+
+            {showResults && (
+                <div className="mt-12 text-center">
+                    {searchMessage && <p className="text-red-500">{searchMessage}</p>}
+                </div>
+            )}
+
+            {showResults && (
                 <div className="bg-white">
                     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                         <h2 className="sr-only">Searched Items</h2>
@@ -83,7 +88,7 @@ const SearchBar = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
