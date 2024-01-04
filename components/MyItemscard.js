@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react';
-
+import DeleteModal from './DeleteModal';
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 function Myitemcard(props) {
+  const location = useLocation();
+  const user_Id = location.pathname.split("/")[1];
+  const [modalIsOpen, setModalIsOpen ] = useState(false);
+
   const [imageDataUrl, setImageDataUrl] = useState('');
+
+  const deleteHandler = () => {
+    setModalIsOpen(true);
+  };
+  const closeModalHandler = () => {
+    setModalIsOpen(false);
+  };
 
   useEffect(() => {
     // Convert ArrayBuffer to base64 string
@@ -32,13 +45,15 @@ function Myitemcard(props) {
               <p className="leading-relaxed text-base">{props.description}</p>
               <a className="mt-3 text-indigo-500 inline-flex items-center">{props.price}</a>
               <div className="absolute bottom-0 right-0">
-                <button className="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg mr-2">Update</button>
-                <button className="text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg mr-5 ml-5">Delete</button>
+              <Link to={`/${user_Id}/MyItems/update/${props.id}`}><button className="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg mr-2">Update</button></Link>
+                <button className="text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg mr-5 ml-5" onClick={deleteHandler}>Delete</button>
               </div>
             </div>
           </div>
         </div>
       </div>
+    {modalIsOpen && <DeleteModal id={props.id} onCancel={closeModalHandler} onClick={closeModalHandler} />}
+
     </div>
   );
 }

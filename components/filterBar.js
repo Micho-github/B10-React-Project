@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link,useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const FilterBar = () => {
+
+  const location=useLocation();
+  const user_Id = location.pathname.split("/")[1];
+
   const [cities, setCities] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -15,10 +19,10 @@ const FilterBar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const citiesResponse = await axios.get('http://localhost:8000/cities');
+        const citiesResponse = await axios.get('http://localhost:8000/cities2');
         setCities(citiesResponse.data);
 
-        const categoriesResponse = await axios.get('http://localhost:8000/categories');
+        const categoriesResponse = await axios.get('http://localhost:8000/categories2');
         setCategories(categoriesResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -33,7 +37,7 @@ const FilterBar = () => {
       try {
         if (selectedCategory) {
           const subCategoriesResponse = await axios.get(
-            `http://localhost:8000/subCategories?category=${selectedCategory}`
+            `http://localhost:8000/subCategories2?category=${selectedCategory}`
           );
           setSubCategories(subCategoriesResponse.data);
         }
@@ -124,7 +128,7 @@ const FilterBar = () => {
           ) : (
             <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {items.map((item) => (
-                <Link key={item.Item_id} to={`/item/${item.Item_id}`} className="group">
+                <Link key={item.Item_id} to={`/${user_Id}/item/${item.Item_id}`} className="group">
                   <div key={item.Item_id} className="group">
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                       {item.Item_Image && (

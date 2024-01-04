@@ -4,8 +4,11 @@ import ItemInfoCard from '../components/itemInfoCard';
 import Footer from '../components/footer';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
 
 function ItemPage() {
+  const location=useLocation();
+  const user_Id = location.pathname.split("/")[1];
   const { itemId } = useParams();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,7 +17,8 @@ function ItemPage() {
   useEffect(() => {
     const fetchItemDetails = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/item/${itemId}`);
+        const res = await axios.get(`http://localhost:8000/item/${itemId}`);
+        console.log(res.data)
         setItem(res.data);
         setLoading(false);
       } catch (err) {
@@ -38,7 +42,7 @@ function ItemPage() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar USERID={user_Id}/>
       <ItemInfoCard item={item} />
       <Footer/>
     </div>
