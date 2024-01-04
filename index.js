@@ -339,16 +339,30 @@ app.get("/item/:itemId", (req, res) => {
 app.put("/item/:itemId/reserve", (req, res) => {
     const itemId = req.params.itemId;
 
-    const updateQuery = 'UPDATE item SET isReserved = 1 WHERE Item_id = ?';
-    db.query(updateQuery, itemId, (err, result) => {
+    const checkQuery = "SELECT isReserved FROM item WHERE Item_id = ?";
+    db.query(checkQuery, itemId, (err, rows) => {
         if (err) return res.json(err);
-        
-        // Check if the update was successful
-        if (result.affectedRows === 0) {
-            return res.json({ message: 'Item not found or already reserved' });
+
+        if (rows.length === 0) {
+            return res.json({ message: 'Item not found' });
         }
 
-        return res.json({ message: 'Item reserved successfully' });
+        const isReserved = rows[0].isReserved;
+
+        if (isReserved === 1) {
+            return res.json({ message: 'Item is already reserved' });
+        } else {
+            const updateQuery = "UPDATE item SET isReserved = 1 WHERE Item_id = ?";
+            db.query(updateQuery, itemId, (err, result) => {
+                if (err) return res.json(err);
+
+                if (result.affectedRows === 0) {
+                    return res.json({ message: 'Item not found or already reserved' });
+                }
+
+                return res.json({ message: 'Item reserved successfully' });
+            });
+        }
     });
 });
 
