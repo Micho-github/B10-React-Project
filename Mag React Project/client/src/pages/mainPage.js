@@ -1,7 +1,6 @@
 import Navbar from "../components/navbar";
 import ItemListHome from "../components/itemListHome";
 import SearchBar from "../components/searchBar";
-import FilterButton from "../components/filterButton";
 import Footer from "../components/footer";
 
 
@@ -14,7 +13,6 @@ function MainPage(){
                 <h1 id="welcoming_description" className="text-gray-900">The Best Marketplace For YOU</h1>
             </div>
             <SearchBar/>
-            <FilterButton/>
             <ItemListHome/>
             <Footer/>
         </div>
