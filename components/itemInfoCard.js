@@ -1,26 +1,28 @@
 import axios from "axios";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
-function ItemInfoCard({ item }){
+function ItemInfoCard({ item }) {
+  const location = useLocation();
 
+  const user_Id = location.pathname.split("/")[2];
   const [successMessage, setSuccessMessage] = useState('');
-    
-    // When the request button is clicked
+
   const handleRequestButtonClick = async (itemId) => {
     try {
-        const response = await axios.put(`http://localhost:8000/item/${itemId}/reserve`);
-        console.log(response.data); // Success message or any response from the server
-        setSuccessMessage(response.data.message);
+      const response = await axios.put(`http://localhost:8800/item/${itemId}/reserve`, { userId: user_Id });
+      console.log(response.data); // Success message or any response from the server
+      setSuccessMessage(response.data.message);
 
-        // Clear the success message after a few seconds 
+      // Clear the success message after a few seconds
       setTimeout(() => {
         setSuccessMessage('');
-      }, 3000); // Clear the message after 3 seconds 
-        
+      }, 3000); // Clear the message after 3 seconds
     } catch (error) {
-        console.error("Error reserving item:", error);
+      console.error("Error reserving item:", error);
     }
   };
+
 
   const handleReportButtonClick = (username) =>{
     setSuccessMessage("Seller '" + username + "' has been reported.");
@@ -43,9 +45,7 @@ function ItemInfoCard({ item }){
       <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src={item.Item_Image}/>
       <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
         <h2 class="text-sm title-font text-gray-500 tracking-widest">Seller Name : {item.Username}</h2>
-        <h2 class="text-sm title-font text-blue-500 tracking-widest">Email : {item.Email}</h2>
-        <h2 class="text-sm title-font text-blue-500 tracking-widest">Phone : {item.Phone_No}</h2>
-        <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">{item.Item_Name}</h1>
+
         <div class="flex mb-4">
           <span class="flex items-center">
             <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-blue-500" viewBox="0 0 24 24">
@@ -67,6 +67,7 @@ function ItemInfoCard({ item }){
           </span>
           
         </div>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">{item.Item_Name}</h1>
         <p class="leading-relaxed">{item.Item_Description}</p>
         <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
           
@@ -93,5 +94,6 @@ function ItemInfoCard({ item }){
 
     );
 }
+
 
 export default ItemInfoCard;
