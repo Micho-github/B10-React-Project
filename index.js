@@ -374,6 +374,15 @@ app.put("/item/:itemId/reserve", (req, res) => {
         }
     });
 });
+app.get("/:user_id/profile", (req, res) => {
+    const user_id = req.params.user_id;
+    const q = "SELECT * FROM user WHERE User_id = ?";
+    db.query(q, [user_id], (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    });
+});
+
 
 
 
