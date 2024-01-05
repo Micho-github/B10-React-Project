@@ -9,7 +9,6 @@ function ProfilePage(){
         <div>
             <Navbar USERID={user_Id}/>
             <ProfileCard/>
-            <Footer/>
         </div>
     );
 }

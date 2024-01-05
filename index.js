@@ -337,53 +337,105 @@ app.get("/item/:itemId", (req, res) => {
 });
 
 app.put("/item/:itemId/reserve", (req, res) => {
-    const itemId = req.params.itemId;
-    const userId = req.body.userId; // Assuming userId is sent in the request body
+  const itemId = req.params.itemId;
+  const userId = req.body.userId; // Assuming userId is sent in the request body
 
-    // Check if the item is already reserved
-    const checkQuery = "SELECT isReserved FROM item WHERE Item_id = ?";
-    db.query(checkQuery, itemId, (err, rows) => {
-        if (err) return res.json(err);
+  // Check if the item is already reserved
+  const checkQuery = "SELECT isReserved FROM item WHERE Item_id = ?";
+  db.query(checkQuery, itemId, (err, rows) => {
+      if (err) return res.json(err);
 
-        if (rows.length === 0) {
-            return res.json({ message: 'Item not found' });
+      if (rows.length === 0) {
+          return res.json({ message: 'Item not found' });
+      }
+
+      const isReserved = rows[0].isReserved;
+
+      if (isReserved === 1) {
+          return res.json({ message: 'Item is already reserved' });
+      } else {
+          // Update the item as reserved
+          const updateQuery = "UPDATE item SET isReserved = 1 WHERE Item_id = ?";
+          db.query(updateQuery, itemId, (err, result) => {
+              if (err) return res.json(err);
+
+              if (result.affectedRows === 0) {
+                  return res.json({ message: 'Item not found or already reserved' });
+              }
+
+              // Add the item and user IDs to the request_item table
+              const insertRequestQuery = "INSERT INTO request_item (Item_id, User_id, Date_Of_Request) VALUES (?, ?, NOW())";
+              db.query(insertRequestQuery, [itemId, userId], (err, insertResult) => {
+                  if (err) return res.json(err);
+
+                  return res.json({ message: 'Item reserved successfully', insertResult });
+              });
+          });
+      }
+  });
+});
+
+
+app.get("/:user_id/Reserved", (req, res) => {
+  const user_id = req.params.user_id;
+  const q = "SELECT user.Username, user.Email, user.Phone_no, item.Item_id, item.Item_Image, item.Item_name, item.price, request_item.Date_Of_Request FROM request_item JOIN item ON request_item.Item_id = item.Item_id JOIN user ON item.User_id = user.User_id WHERE request_item.User_id = ?";
+
+  
+  db.query(q, [user_id], (err, data) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json(data);
+  });
+});
+
+
+app.delete("/Reserved/delete/:id", (req, res) => {
+  const ItemId = req.params.id;
+
+  db.beginTransaction(function (err) {
+    if (err) return res.json(err);
+
+    const deleteQuery = "DELETE FROM request_item WHERE Item_id = ?";
+    const updateQuery = "UPDATE item SET isReserved = 0 WHERE Item_id = ?";
+
+    // Delete from request_item
+    db.query(deleteQuery, [ItemId], function (err, data) {
+      if (err) {
+        return db.rollback(function () {
+          res.json(err);
+        });
+      }
+
+      // Update item table
+      db.query(updateQuery, [ItemId], function (err, data) {
+        if (err) {
+          return db.rollback(function () {
+            res.json(err);
+          });
         }
 
-        const isReserved = rows[0].isReserved;
-
-        if (isReserved === 1) {
-            return res.json({ message: 'Item is already reserved' });
-        } else {
-            // Update the item as reserved
-            const updateQuery = "UPDATE item SET isReserved = 1 WHERE Item_id = ?";
-            db.query(updateQuery, itemId, (err, result) => {
-                if (err) return res.json(err);
-
-                if (result.affectedRows === 0) {
-                    return res.json({ message: 'Item not found or already reserved' });
-                }
-
-                // Add the item and user IDs to the request_item table
-                const insertRequestQuery = "INSERT INTO request_item (Item_id, User_id, Date_Of_Request) VALUES (?, ?, NOW())";
-                db.query(insertRequestQuery, [itemId, userId], (err, insertResult) => {
-                    if (err) return res.json(err);
-
-                    return res.json({ message: 'Item reserved successfully', insertResult });
-                });
+        db.commit(function (err) {
+          if (err) {
+            return db.rollback(function () {
+              res.json(err);
             });
-        }
+          }
+          res.json("Item has been Unreserved.");
+        });
+      });
     });
+  });
 });
+
 app.get("/:user_id/profile", (req, res) => {
-    const user_id = req.params.user_id;
-    const q = "SELECT * FROM user WHERE User_id = ?";
-    db.query(q, [user_id], (err, data) => {
-        if (err) return res.json(err);
-        return res.json(data);
-    });
+  const user_id = req.params.user_id;
+  const q = "SELECT * FROM user WHERE User_id = ?";
+  db.query(q, [user_id], (err, data) => {
+      if (err) return res.json(err);
+      return res.json(data);
+  });
 });
-
-
 
 
 app.listen(8000, ()=>{

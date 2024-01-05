@@ -2,8 +2,11 @@ import { useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import FilterButton from "./filterButton";
-
+import { useLocation } from "react-router-dom";
 const SearchBar = () => {
+    const location = useLocation();
+    const user_Id = location.pathname.split("/")[1];
+
     const [search_input, setSearch_Input] = useState('');
     const [itemSearch, setItemSearch] = useState([]);
     const [searchMessage, setSearchMessage] = useState('');
@@ -72,7 +75,7 @@ const SearchBar = () => {
 
                         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
                             {itemSearch.map((item) => (
-                                <Link key={item.Item_id} to={`/item/${item.Item_id}`} className="group">
+                                <Link key={item.Item_id} to={`/${user_Id}/item/${item.Item_id}`} className="group">
                                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                                         {item.Item_Image && (
                                             <img

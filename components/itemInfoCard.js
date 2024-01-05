@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 function ItemInfoCard({ item }) {
@@ -7,6 +7,7 @@ function ItemInfoCard({ item }) {
 
   const user_Id = location.pathname.split("/")[1];
   const [successMessage, setSuccessMessage] = useState('');
+  const [imageDataUrl, setImageDataUrl] = useState('');
 
   const handleRequestButtonClick = async (itemId) => {
     try {
@@ -17,7 +18,7 @@ function ItemInfoCard({ item }) {
       // Clear the success message after a few seconds
       setTimeout(() => {
         setSuccessMessage('');
-      }, 3000); // Clear the message after 3 seconds
+      }, 5000); // Clear the message after 3 seconds
     } catch (error) {
       console.error("Error reserving item:", error);
     }
@@ -37,12 +38,30 @@ function ItemInfoCard({ item }) {
       setSuccessMessage('');
     }, 3000); // Clear the message after 3 seconds 
   }
+  useEffect(() => {
+    // Check if item and item.image are defined before accessing data
+    if (item && item.Item_Image) {
+      // Convert ArrayBuffer to base64 string
+      const base64String = arrayBufferToBase64(item.Item_Image.data);
+      setImageDataUrl(`data:image/png;base64,${base64String}`);
+    }
+  }, [item]);
+
+  // Convert ArrayBuffer to base64
+  function arrayBufferToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
 
     return(
      <section class="text-gray-600 body-font overflow-hidden">
   <div class="container px-5 py-24 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
-      <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src={item.Item_Image}/>
+    <img src={imageDataUrl} alt="Item" style={{ width: "500px",height: "400px" }} />
       <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
         <h2 class="text-sm title-font text-gray-500 tracking-widest">Seller Name : {item.Username}</h2>
 
@@ -74,7 +93,7 @@ function ItemInfoCard({ item }) {
          
         </div>
         <div class="flex">
-          <span class="title-font font-medium text-2xl text-gray-900">{item.Price}</span>
+          <span class="title-font font-medium text-2xl text-gray-900"> $ {item.Price}</span>
           <button onClick={() => handleRequestButtonClick(item.Item_id)}  class="flex ml-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Request Item</button>
           <button onClick={() => handleReportButtonClick(item.Username)} class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-500 rounded">Report Seller</button>
           <button onClick={() => handleFavoritesButtonClick(item.Item_Name)} class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4 hover:bg-red-500">

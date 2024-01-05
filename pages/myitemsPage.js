@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Footer from "../components/footer";
 import MyItemsList from "../components/MyItemsList";
 import { useLocation } from "react-router-dom";
-
+import { PlusCircleIcon } from '@heroicons/react/24/outline'
 const MyItemsPage = () => {
     const location=useLocation();
     const user_Id = location.pathname.split("/")[1];
@@ -11,18 +11,14 @@ const MyItemsPage = () => {
     return(
         <div>
             <Navbar USERID={user_Id}/>
-            <Link to={`/${user_Id}/additem`}>
                 <div>
-                <button className="flex mx-auto mt-16 mb-5 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded-full text-lg items-center">
-                <div className="flex items-center justify-center w-12 h-12 bg-green-500 rounded-full text-white text-3xl font-bold cursor-pointer mr-4 border-white border-2 align-middle p-5 pb-6">
-                 +
-                </div>
+                <Link to={`/${user_Id}/additem`} className="w-80 flex mx-auto mt-16 mb-5 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded-full text-2xl items-center">
+                 <PlusCircleIcon className="w-20 mr-5"/>
                  Add New Item
-                </button>
-            </div></Link>
+                 </Link>
+            </div>
             <MyItemsList/>
             <Footer/>
-
         </div>
     );
 }

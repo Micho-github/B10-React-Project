@@ -185,16 +185,15 @@ function UpdateItemForm() {
       </div>
 
       <div className="flex flex-col mb-4 text-center">
-        <label htmlFor="description" className="leading-7 text-sm text-gray-600">
-          Description
-        </label>
+
         <textarea
           id="description"
+          placeholder="Enter Your Item Description here"
           ref={ItemDescriptionRef}
           required
           rows="5"
           name="description"
-          className="mx-auto w-1/2 rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+          className=" bg-gray-100 mx-auto w-1/2 rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
         ></textarea>
       </div>
       <button type="submit" className=" flex mx-auto mt-5 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">

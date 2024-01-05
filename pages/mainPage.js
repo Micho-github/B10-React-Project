@@ -19,7 +19,6 @@ function MainPage(){
                 <h1 id="welcoming_description" className="text-gray-900">The Best Marketplace For YOU</h1>
             </div>
             <SearchBar/>
-            <FilterButton/>
             <ItemListHome/>
             <Footer/>
         </div>

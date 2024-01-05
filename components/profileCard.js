@@ -1,28 +1,27 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-
+import axios from "axios";
 
 function ProfileCard() {
-    const [userInfo, setUserInfo] = useState({});
-    const location = useLocation();
-    const user_Id = location.pathname.split("/")[1];
-    
+  const [userInfo, setUserInfo] = useState({});
+  const location = useLocation();
+  const user_Id = location.pathname.split("/")[1];
 
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const response = await fetch(`http://localhost:8000/${user_Id}/profile`);
-                const data = await response.json();
-                setUserInfo(data);
+  useEffect(() => {
+      const fetchUserInfo = async () => {
+          try {
+              const res = await axios.get(`http://localhost:8000/${user_Id}/profile`);
+              
+              setUserInfo(res.data);
+          } catch (error) {
+              console.error("Error fetching user information:", error);
+          }
+      };
 
-            } catch (error) {
-                console.error("Error fetching user information:", error);
-            }
-        };
+      fetchUserInfo();
+  }, [user_Id]);
 
-        fetchUserInfo();
-    }, [user_Id]);
 
 
     return(
@@ -65,7 +64,7 @@ function ProfileCard() {
         </div>
         <div class="flex">
           <button   class="flex m-3 text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Edit Profile</button>
-          <button  class="flex m-3 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-500 rounded"><Link to={<MyItemsPage/>}>My items</Link></button>
+          <button  class="flex m-3 text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-500 rounded"><Link to={`/${user_Id}/Myitems`}>My items</Link></button>
         </div>
     
       </div>

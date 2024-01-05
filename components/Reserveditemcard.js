@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import DeleteModal from './DeleteModal';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-function Myitemcard(props) {
+import UnreserveModal from './UnreserveModel';
+function Reserveditemcard(props) {
+
   const location = useLocation();
   const user_Id = location.pathname.split("/")[1];
+
   const [modalIsOpen, setModalIsOpen ] = useState(false);
 
   const [imageDataUrl, setImageDataUrl] = useState('');
+  const [reqdate, setreqdate] = useState('');
 
   const deleteHandler = () => {
     setModalIsOpen(true);
@@ -31,6 +34,11 @@ function Myitemcard(props) {
     }
     return btoa(binary);
   }
+useEffect(()=>{
+    const datestring = props.requestdate.split("T")[0];
+    setreqdate(datestring);
+},[props.requestdate]
+);
 
   return (
     <div className="container bg-white px-5 py-3 mx-auto flex flex-wrap" key={props.id}>
@@ -41,22 +49,24 @@ function Myitemcard(props) {
               <img src={imageDataUrl} alt="Item" style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
             </div>
             <div className="flex-grow">
-              <h2 className="text-gray-900 text-lg title-font font-medium mb-3">{props.name}</h2>
-              <p className="leading-relaxed text-base">{props.description}</p>
-              <a className="mt-3 text-indigo-500 inline-flex items-center">{props.price}</a>
-              <div className="absolute bottom-0 right-0">
-              <Link to={`/${user_Id}/MyItems/update/${props.id}`}>
-                <button className="text-white bg-indigo-500 border-0 mb-2 py-1 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Update</button></Link>
-                <button className="text-white bg-red-500 border-0 mb-2 py-1 px-8 focus:outline-none hover:bg-red-600 rounded text-lg mr-5 ml-4" onClick={deleteHandler}>Delete</button>
+            <h2 className="text-gray-900 text-lg font-semibold mb-3">Seller Information:</h2>
+<p className="text-m font-medium text-gray-900 truncate dark:text-black">Username: {props.name}</p>
+<p className="text-m font-medium text-gray-900 truncate dark:text-black">Email: {props.email}</p>
+<p className="text-m font-medium text-gray-900 truncate dark:text-black">Phone: {props.phone}</p>
+<p className="text-m font-medium text-gray-900 truncate dark:text-black">Date Of Your Request: {reqdate}</p>
+<p className="text-m font-medium text-gray-900 truncate dark:text-black">Price: $ {props.price}</p>
+<div className="absolute bottom-0 right-0">
+
+
+                <button className="text-white bg-indigo-500 border-0 mb-2 py-1 px-8 focus:outline-none hover:bg-red-600 rounded text-lg mr-5 ml-4" onClick={deleteHandler}>Remove</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    {modalIsOpen && <DeleteModal id={props.id} onCancel={closeModalHandler} onClick={closeModalHandler} />}
-
+      {modalIsOpen && <UnreserveModal id={props.id} onCancel={closeModalHandler} onClick={closeModalHandler} />}
     </div>
   );
 }
 
-export default Myitemcard;
+export default Reserveditemcard;

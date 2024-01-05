@@ -9,8 +9,8 @@ function AddItemPage() {
     return(
         <div>
             <Navbar USERID={user_Id}/>
-            <div className="align-top pb-5 bg-gray-200 my-10 mx-10 border-double border-blue-500 border-2 rounded-lg">
-            <h1 className="pt-10 text-center text-5xl w-full text-blue-600">Add Item</h1>
+            <div className="align-top pb-5 bg-gray-200 my-10 mx-10 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 rounded-lg">
+            <h1 className="text-center font-bold text-5xl w-full text-indigo-500 pb-4">Add Item</h1>
             <AddItemForm/>
     </div>
     <Footer/>

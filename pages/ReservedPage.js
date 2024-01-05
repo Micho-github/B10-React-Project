@@ -1,6 +1,7 @@
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import { useLocation } from "react-router-dom";
+import ReservedItemsList from "../components/ReservedItemsList";
 
 function ReservedPage(){
     const location=useLocation();
@@ -9,7 +10,7 @@ function ReservedPage(){
         
         <div>
             <Navbar USERID={user_Id}/>
-            <h1>Reserved Page</h1>
+            <ReservedItemsList/>
             <Footer/>
         </div>
     );

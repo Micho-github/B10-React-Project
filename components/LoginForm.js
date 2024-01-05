@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import AlertModal from './AlertModal';
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
+
 function LoginForm(){
     const [modalIsOpen, setModalIsOpen ] = useState(false);
 
@@ -40,17 +41,40 @@ function LoginForm(){
       }
       };
     
-    return(
-        <div className="align-top pb-5 bg-gray-200 my-10 mx-10 border-double border-blue-500 border-2 rounded-lg">
-            <h1 className="pt-10 text-center text-5xl w-full text-blue-600">Login</h1>
-            <form onSubmit={submitHandler}>
-            <input type="text" ref={UsernameRef} placeholder="Enter Username" className=" flex mx-auto mt-20 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
-            <input type="password" ref={PasswordRef} placeholder="Enter Password" className="flex mx-auto mt-10 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"/>
-            <button className=" flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Login</button>
-            </form>
-            <div className="text-center mt-16 text-lg text-red-400 hover:text-red-600"><a href="./">Forgot your password?</a></div>
-            <button type="submit" className=" flex mx-auto mt-16 mb-5 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Create New Account</button>
-            {modalIsOpen && <AlertModal onCancel={closeModalHandler} onClick={closeModalHandler} />}
+
+
+
+
+return(
+  <div class="mt-10">
+    <img src="/Images/mag_high_resolution_logo_transparent.png" class="h-40 w-30 mx-auto mb-10"></img>
+    <div class="mx-auto mb-20 w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8">
+        <form onSubmit={submitHandler} class="space-y-6">
+            <h5 class="text-center text-xl font-medium text-gray-900">Sign in</h5>
+            <div>
+                <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Your Username</label>
+                <input type="text" ref={UsernameRef} name="username" id="username" class="bg-gray-50 border rounded border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out w-full p-2.5" placeholder="Enter Username" required />
+            </div>
+            <div>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Your password</label>
+                <input type="password" ref={PasswordRef} name="password" id="password" placeholder="••••••••" class="bg-gray-50 border rounded border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out w-full p-2.5" required />
+            </div>
+            <div class="flex items-start">
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300" required />
+                    </div>
+                    <label for="remember" class="ms-2 text-sm font-medium text-gray-900">Remember me</label>
+                </div>
+                <a href="#" class="ms-auto text-sm text-blue-700 hover:underline">Lost Password?</a>
+            </div>
+            <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Login to your account</button>
+            <div class="text-sm font-medium text-gray-500">
+                Not registered? <a href="#" class="text-blue-700 hover:underline">Create account</a>
+            </div>
+        </form>
+      {modalIsOpen && <AlertModal onCancel={closeModalHandler} onClick={closeModalHandler} />}
+        </div>
         </div>
     );
 }
