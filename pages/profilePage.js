@@ -1,5 +1,6 @@
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
+import ProfileCard from "../components/profileCard";
 import { useLocation } from "react-router-dom";
 function ProfilePage(){
     const location=useLocation();
@@ -7,7 +8,7 @@ function ProfilePage(){
     return(
         <div>
             <Navbar USERID={user_Id}/>
-            <h1>Profile Page</h1>
+            <ProfileCard/>
             <Footer/>
         </div>
     );
