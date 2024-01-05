@@ -5,12 +5,12 @@ import { useLocation } from "react-router-dom";
 function ItemInfoCard({ item }) {
   const location = useLocation();
 
-  const user_Id = location.pathname.split("/")[2];
+  const user_Id = location.pathname.split("/")[1];
   const [successMessage, setSuccessMessage] = useState('');
 
   const handleRequestButtonClick = async (itemId) => {
     try {
-      const response = await axios.put(`http://localhost:8800/item/${itemId}/reserve`, { userId: user_Id });
+      const response = await axios.put(`http://localhost:8000/item/${itemId}/reserve`, { userId: user_Id });
       console.log(response.data); // Success message or any response from the server
       setSuccessMessage(response.data.message);
 
