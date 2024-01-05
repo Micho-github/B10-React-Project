@@ -338,7 +338,9 @@ app.get("/item/:itemId", (req, res) => {
 
 app.put("/item/:itemId/reserve", (req, res) => {
     const itemId = req.params.itemId;
+    const userId = req.body.userId; // Assuming userId is sent in the request body
 
+    // Check if the item is already reserved
     const checkQuery = "SELECT isReserved FROM item WHERE Item_id = ?";
     db.query(checkQuery, itemId, (err, rows) => {
         if (err) return res.json(err);
@@ -352,6 +354,7 @@ app.put("/item/:itemId/reserve", (req, res) => {
         if (isReserved === 1) {
             return res.json({ message: 'Item is already reserved' });
         } else {
+            // Update the item as reserved
             const updateQuery = "UPDATE item SET isReserved = 1 WHERE Item_id = ?";
             db.query(updateQuery, itemId, (err, result) => {
                 if (err) return res.json(err);
@@ -360,7 +363,13 @@ app.put("/item/:itemId/reserve", (req, res) => {
                     return res.json({ message: 'Item not found or already reserved' });
                 }
 
-                return res.json({ message: 'Item reserved successfully' });
+                // Add the item and user IDs to the request_item table
+                const insertRequestQuery = "INSERT INTO request_item (Item_id, User_id, Date_Of_Request) VALUES (?, ?, NOW())";
+                db.query(insertRequestQuery, [itemId, userId], (err, insertResult) => {
+                    if (err) return res.json(err);
+
+                    return res.json({ message: 'Item reserved successfully', insertResult });
+                });
             });
         }
     });
